@@ -17,3 +17,12 @@ Write the program three times.
     The second time, optimize the program to run fast fast as you can make it.
     The third time, write as extendible a program as you can.
 
+Setup Bits I will forget:
+1246  touch README.md
+ 1247  git init
+ 1248  git add README.md
+ 1249  git commit -m "first commit"
+ 1250  git config --global user.name "Bob Sullivan"
+ 1251  git remote add origin https://github.com/sullivanbob/kataEight.git
+ 1252  git push -u origin master
+
