@@ -17,6 +17,18 @@ Write the program three times.
     The second time, optimize the program to run fast fast as you can make it.
     The third time, write as extendible a program as you can.
 
+Rough Timing on my PC:
+
+bob@bob-KT965-ATXE:~/kata/eight$ time ./kataEight >& foo
+real    0m10.559s
+user    0m10.525s
+sys 0m0.016s
+
+bob@bob-KT965-ATXE:~/kata/eight$ time ./kataOptOne >& bar
+real    0m4.020s
+user    0m3.996s
+sys 0m0.008s
+
 Setup Bits I will forget:
 1246  touch README.md
  1247  git init

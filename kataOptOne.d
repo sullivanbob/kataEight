@@ -8,22 +8,24 @@
 // 1) No single letter words.  Example does not use them.
 // 2) No words in dictionary longer than 6 words.
 //    No match for them anyway.
+// 3) No need to split of lines read into words.
+//    Cut and paste problem from example.
+// 4) Skip too small check.  Base result on #1.
 //
 // Examples URLs:
 // http://www.informit.com/articles/article.aspx?p=1381876&seqNum=4
 // http://www.dprogramming.com/FileTutorial.html
 // http://stackoverflow.com/questions/10309993/read-a-file-into-an-array-of-lines-in-d
 
-import std.stdio, std.string, std.regex;
-import std.array;
+import std.stdio, std.string, std.array;
 
 void main() 
 {
     uint[string] dic;
     string[uint] dic2;
+    string str;
+    string strIn;
     uint cnt = 0;
-    uint idx = 0;
-    uint loop = 0;
 
     File myFile;
     myFile.open("word.lst", "rt");
@@ -32,9 +34,10 @@ void main()
     {
         // one word per line
         char[] word = strip(line);
+        // force lower case for matching
         word = toLower(word);
 
-        // Skip Possessives like am's
+        // Skip Possessives like achilles's
         if (-1 != indexOf(word, "'s"))
         {
             continue;
@@ -45,40 +48,37 @@ void main()
         int len = word.length;
         if ((len < 2) || (len > 6) || (word in dic))
         {
-            continue; // nothing to do
+            // Skip these conditions
+            continue;
         }
 
-        uint newID = dic.length;
-        dic[word.idup] = newID;
+        // Index based on side of dictionary
+        cnt = dic.length;
+        dic[word.idup] = cnt;
+        // Must create duplicate for storage
         dic2[cnt] = word.idup;
-
-        // writeln(dic[word], '\t', word);
-        cnt++;
     }
     myFile.close();
 
-    for (idx = 0; idx < cnt; idx++)
+    foreach(str; dic2) 
     {
-        int llen = dic2[idx].length;
-        if ((llen >= 2) && (llen <= 4))
+        int llen = str.length;
+        if (llen <= 4)
         {
-            for (loop = 0; loop < cnt; loop++)
+            foreach(strIn; dic2) 
             {
-                int rlen = dic2[loop].length;
-                
-                if ((loop != idx) && (llen + rlen == 6))
+                if ((strIn != str) && ((llen + strIn.length) == 6))
                 {
-                    string result = dic2[idx] ~ dic2[loop];
+                    string result = str ~ strIn;
                     int index = dic.get(result, 0);
                     if (0 != index)
                     {
                         writefln("%10d FOUND %s + %s -> %s", 
-                                 index, dic2[idx], dic2[loop], result);
+                                 index, str, strIn, result);
                     }
                 }
             }
         }
     }
 }
-
 
